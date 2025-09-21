@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Column, Card, ColumnTheme } from '../lib/types.ts';
-import { createId } from '../lib/uid.ts';
+import { Column, Card, ColumnTheme } from '../lib/types';
+import { createId } from '../lib/uid';
 
 interface BoardState {
   boardTitle: string;
   columns: Column[];
+  availableTags: string[];
   setBoardTitle: (title: string) => void;
   addColumn: (title: string, theme: ColumnTheme) => void;
   updateColumn: (id: string, payload: Partial<Column>) => void;
@@ -14,7 +15,11 @@ interface BoardState {
   updateCard: (columnId: string, cardId: string, payload: Partial<Card>) => void;
   deleteCard: (columnId: string, cardId: string) => void;
   moveCard: (fromColumnId: string, toColumnId: string, cardId: string, position?: number) => void;
+  addTag: (tag: string) => void;
+  removeTag: (tag: string) => void;
 }
+
+const initialAvailableTags = ['ux', 'visual', 'research', 'frontend', 'analytics', 'strategy'];
 
 const initialColumns: Column[] = [
   {
@@ -80,6 +85,7 @@ export const useBoardStore = create<BoardState>()(
     (set) => ({
       boardTitle: 'Atlas Flow Launch Plan',
       columns: initialColumns,
+      availableTags: initialAvailableTags,
       setBoardTitle: (title) => set(() => ({ boardTitle: title })),
       addColumn: (title, theme) =>
         set((state) => ({
@@ -108,16 +114,16 @@ export const useBoardStore = create<BoardState>()(
           columns: state.columns.map((column) =>
             column.id === columnId
               ? {
-                  ...column,
-                  cards: [
-                    ...column.cards,
-                    {
-                      id: createId(),
-                      createdAt: new Date().toISOString(),
-                      ...card
-                    }
-                  ]
-                }
+                ...column,
+                cards: [
+                  ...column.cards,
+                  {
+                    id: createId(),
+                    createdAt: new Date().toISOString(),
+                    ...card
+                  }
+                ]
+              }
               : column
           )
         })),
@@ -126,11 +132,11 @@ export const useBoardStore = create<BoardState>()(
           columns: state.columns.map((column) =>
             column.id === columnId
               ? {
-                  ...column,
-                  cards: column.cards.map((cardItem) =>
-                    cardItem.id === cardId ? { ...cardItem, ...payload } : cardItem
-                  )
-                }
+                ...column,
+                cards: column.cards.map((cardItem) =>
+                  cardItem.id === cardId ? { ...cardItem, ...payload } : cardItem
+                )
+              }
               : column
           )
         })),
@@ -139,9 +145,9 @@ export const useBoardStore = create<BoardState>()(
           columns: state.columns.map((column) =>
             column.id === columnId
               ? {
-                  ...column,
-                  cards: column.cards.filter((cardItem) => cardItem.id !== cardId)
-                }
+                ...column,
+                cards: column.cards.filter((cardItem) => cardItem.id !== cardId)
+              }
               : column
           )
         })),
@@ -200,7 +206,24 @@ export const useBoardStore = create<BoardState>()(
           });
 
           return { columns: updatedColumns };
-        })
+        }),
+      addTag: (tag) =>
+        set((state) => ({
+          availableTags: state.availableTags.includes(tag)
+            ? state.availableTags
+            : [...state.availableTags, tag]
+        })),
+      removeTag: (tag) =>
+        set((state) => ({
+          availableTags: state.availableTags.filter((t) => t !== tag),
+          columns: state.columns.map((column) => ({
+            ...column,
+            cards: column.cards.map((card) => ({
+              ...card,
+              tags: card.tags.filter((t) => t !== tag)
+            }))
+          }))
+        }))
     }),
     {
       name: 'atlas-flow-board'
