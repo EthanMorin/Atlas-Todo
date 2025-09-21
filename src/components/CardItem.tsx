@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import { Fragment, useState } from 'react';
+import type { DragEvent } from 'react';
 import { InlineEditableText } from './InlineEditableText.tsx';
 import { Card, Column } from '../lib/types.ts';
 
@@ -27,14 +28,38 @@ const fallbackTagClass = 'bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:
 
 export function CardItem({ card, columnId, columns, onUpdate, onDelete, onMove }: CardItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleMove = (targetColumnId: string) => {
     if (targetColumnId === columnId) return;
     onMove(columnId, targetColumnId, card.id);
   };
 
+  const handleDragStart = (event: DragEvent<HTMLElement>) => {
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData(
+      'application/atlasflow-card',
+      JSON.stringify({ cardId: card.id, fromColumnId: columnId })
+    );
+    event.dataTransfer.setData('text/plain', card.title);
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
-    <article className="group relative overflow-hidden rounded-2xl bg-white/70 p-4 shadow-card backdrop-blur transition hover:-translate-y-1 hover:shadow-elevated dark:bg-slate-800/70 dark:shadow-none">
+    <article
+      data-card-id={card.id}
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      className={clsx(
+        'group relative overflow-hidden rounded-2xl bg-white/70 p-4 shadow-card backdrop-blur transition hover:-translate-y-1 hover:shadow-elevated dark:bg-slate-800/70 dark:shadow-none',
+        isDragging && 'opacity-60'
+      )}
+    >
       <div className="absolute inset-0 pointer-events-none opacity-0 transition group-hover:opacity-100">
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-indigo-200/30 dark:from-white/5 dark:to-indigo-500/10" />
       </div>

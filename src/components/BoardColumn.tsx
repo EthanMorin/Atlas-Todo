@@ -1,5 +1,5 @@
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Card, Column, ColumnTheme } from '../lib/types.ts';
 import { InlineEditableText } from './InlineEditableText.tsx';
@@ -62,6 +62,8 @@ export function BoardColumn({
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [cardTitle, setCardTitle] = useState('');
   const [cardDescription, setCardDescription] = useState('');
+  const [isDragOver, setIsDragOver] = useState(false);
+  const listRef = useRef<HTMLDivElement | null>(null);
 
   const handleAddCard = () => {
     if (!cardTitle.trim()) return;
@@ -114,7 +116,70 @@ export function BoardColumn({
         </button>
       </header>
 
-      <div className="flex flex-1 flex-col gap-4 overflow-y-auto pb-4 scrollbar-thin">
+      <div
+        ref={listRef}
+        className={clsx(
+          'flex flex-1 flex-col gap-4 overflow-y-auto pb-4 scrollbar-thin rounded-2xl',
+          isDragOver &&
+            'ring-2 ring-indigo-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
+        )}
+        onDragOver={(event) => {
+          if (event.dataTransfer.types.includes('application/atlasflow-card')) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+          }
+        }}
+        onDragEnter={(event) => {
+          if (event.dataTransfer.types.includes('application/atlasflow-card')) {
+            setIsDragOver(true);
+          }
+        }}
+        onDragLeave={(event) => {
+          if (!event.dataTransfer.types.includes('application/atlasflow-card')) return;
+          const relatedTarget = event.relatedTarget as Node | null;
+          if (!relatedTarget || !event.currentTarget.contains(relatedTarget)) {
+            setIsDragOver(false);
+          }
+        }}
+        onDrop={(event) => {
+          if (!event.dataTransfer.types.includes('application/atlasflow-card')) return;
+          event.preventDefault();
+          setIsDragOver(false);
+          const payload = event.dataTransfer.getData('application/atlasflow-card');
+          if (!payload) return;
+
+          try {
+            const { cardId, fromColumnId } = JSON.parse(payload) as {
+              cardId: string;
+              fromColumnId: string;
+            };
+
+            if (!cardId || !fromColumnId) return;
+
+            let insertionIndex: number | undefined;
+            const container = listRef.current;
+            if (container) {
+              const cardElements = Array.from(
+                container.querySelectorAll<HTMLElement>('[data-card-id]')
+              );
+              const cursorY = event.clientY;
+              insertionIndex = cardElements.length;
+
+              for (let index = 0; index < cardElements.length; index += 1) {
+                const rect = cardElements[index].getBoundingClientRect();
+                if (cursorY < rect.top + rect.height / 2) {
+                  insertionIndex = index;
+                  break;
+                }
+              }
+            }
+
+            onMoveCard(fromColumnId, column.id, cardId, insertionIndex);
+          } catch (error) {
+            console.error('Failed to parse drag payload', error);
+          }
+        }}
+      >
         {column.cards.map((card) => (
           <CardItem
             key={card.id}

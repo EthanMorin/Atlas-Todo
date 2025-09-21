@@ -147,6 +147,34 @@ export const useBoardStore = create<BoardState>()(
         })),
       moveCard: (fromColumnId, toColumnId, cardId, position) =>
         set((state) => {
+          if (fromColumnId === toColumnId) {
+            return {
+              columns: state.columns.map((column) => {
+                if (column.id !== fromColumnId) return column;
+
+                const currentIndex = column.cards.findIndex((card) => card.id === cardId);
+                if (currentIndex === -1) return column;
+
+                const reorderedCards = [...column.cards];
+                const [cardToMove] = reorderedCards.splice(currentIndex, 1);
+
+                if (!cardToMove) return column;
+
+                const maxIndex = reorderedCards.length;
+                const targetIndexRaw =
+                  typeof position === 'number' ? Math.min(Math.max(position, 0), maxIndex) : maxIndex;
+                const targetIndex =
+                  typeof position === 'number' && position > currentIndex
+                    ? targetIndexRaw - 1
+                    : targetIndexRaw;
+
+                reorderedCards.splice(targetIndex, 0, cardToMove);
+
+                return { ...column, cards: reorderedCards };
+              })
+            };
+          }
+
           const fromColumn = state.columns.find((column) => column.id === fromColumnId);
           const cardToMove = fromColumn?.cards.find((card) => card.id === cardId);
 
