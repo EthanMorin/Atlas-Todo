@@ -17,33 +17,31 @@ interface CardItemProps {
 }
 
 const tagPalette: Record<string, string> = {
-	research: 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-200',
-	analytics:
-		'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-200',
-	ux: 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-200',
-	visual: 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-200',
-	responsive:
-		'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200',
-	frontend:
-		'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-200',
-	strategy:
-		'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-200',
+	work: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200',
+	personal: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200',
+	health: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200',
+	urgent:
+		'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-200',
+	'low-priority':
+		'bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-200',
+	shopping:
+		'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200',
 };
 
 // Color options for dynamically generated tags
 const dynamicTagColors = [
-	'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-200',
-	'bg-lime-100 text-lime-700 dark:bg-lime-500/20 dark:text-lime-200',
-	'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-200',
-	'bg-pink-100 text-pink-700 dark:bg-pink-500/20 dark:text-pink-200',
-	'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-200',
-	'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-200',
-	'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-500/20 dark:text-fuchsia-200',
-	'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-200',
+	'bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-200',
+	'bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-200',
+	'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-200',
+	'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-200',
+	'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-200',
+	'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200',
+	'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-900 dark:text-fuchsia-200',
+	'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200',
 ];
 
 const fallbackTagClass =
-	'bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:text-slate-200';
+	'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200';
 
 // Function to get a consistent color for a tag based on its name
 const getTagColor = (tag: string): string => {
@@ -145,13 +143,10 @@ export function CardItem({
 			onDragStart={handleDragStart}
 			onDragEnd={handleDragEnd}
 			className={clsx(
-				'group relative overflow-hidden rounded-xl bg-white/70 p-3 shadow-card backdrop-blur transition hover:-translate-y-1 hover:shadow-elevated dark:bg-slate-800/70 dark:shadow-none sm:rounded-2xl sm:p-4',
+				'group relative overflow-hidden rounded-xl bg-white p-3 border border-slate-200 transition hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 sm:rounded-2xl sm:p-4',
 				isDragging && 'opacity-60'
 			)}
 		>
-			<div className="absolute inset-0 pointer-events-none opacity-0 transition group-hover:opacity-100">
-				<div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-indigo-200/30 dark:from-white/5 dark:to-indigo-500/10" />
-			</div>
 			<div className="flex items-start justify-between gap-2 sm:gap-3">
 				<InlineEditableText
 					value={card.title}
@@ -160,7 +155,7 @@ export function CardItem({
 					maxLength={80}
 				/>
 				<Menu as="div" className="relative">
-					<Menu.Button className="rounded-full p-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/80 dark:text-slate-500 dark:hover:bg-slate-700/80 dark:hover:text-slate-200 sm:p-1">
+					<Menu.Button className="rounded-full p-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200 sm:p-1">
 						<EllipsisHorizontalIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 					</Menu.Button>
 					<Transition
@@ -172,7 +167,7 @@ export function CardItem({
 						leaveFrom="transform scale-100 opacity-100"
 						leaveTo="transform scale-95 opacity-0"
 					>
-						<Menu.Items className="absolute right-0 z-10 mt-1 w-36 origin-top-right overflow-hidden rounded-lg border border-slate-200 bg-white/95 p-1 text-xs shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-800/95 sm:mt-2 sm:w-44 sm:rounded-xl sm:text-sm">
+						<Menu.Items className="absolute right-0 z-10 mt-1 w-36 origin-top-right overflow-hidden rounded-lg border border-slate-200 bg-white p-1 text-xs dark:border-slate-700 dark:bg-slate-800 sm:mt-2 sm:w-44 sm:rounded-xl sm:text-sm">
 							<div className="px-2 py-1 text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
 								Move to
 							</div>
@@ -185,7 +180,7 @@ export function CardItem({
 											className={clsx(
 												'flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-slate-600 transition dark:text-slate-200',
 												active &&
-													'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-200',
+													'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
 												column.id === columnId &&
 													'text-slate-400 dark:text-slate-500'
 											)}
@@ -209,7 +204,7 @@ export function CardItem({
 										className={clsx(
 											'w-full rounded-lg px-3 py-2 text-left text-rose-500 transition',
 											active &&
-												'bg-rose-50 text-rose-600 dark:bg-rose-500/20 dark:text-rose-200'
+												'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-200'
 										)}
 									>
 										Remove card

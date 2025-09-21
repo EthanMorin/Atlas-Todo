@@ -34,40 +34,36 @@ const themeStyles: Record<
 	{ accent: string; badge: string; border: string }
 > = {
 	sky: {
-		accent:
-			'rgba(125, 211, 252, 0.95), rgba(14, 165, 233, 0.9), rgba(59, 130, 246, 0.85)',
-		badge: 'bg-sky-500/20 text-sky-500',
-		border: 'border-sky-500/30',
+		accent: 'rgba(59, 130, 246, 0.8)',
+		badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200',
+		border: 'border-blue-300 dark:border-blue-600',
 	},
 	amber: {
-		accent:
-			'rgba(253, 230, 138, 0.95), rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.85)',
-		badge: 'bg-amber-500/20 text-amber-500',
-		border: 'border-amber-500/30',
+		accent: 'rgba(245, 158, 11, 0.8)',
+		badge:
+			'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200',
+		border: 'border-yellow-300 dark:border-yellow-600',
 	},
 	violet: {
-		accent:
-			'rgba(221, 214, 254, 0.95), rgba(167, 139, 250, 0.9), rgba(129, 140, 248, 0.85)',
-		badge: 'bg-violet-500/20 text-violet-400',
-		border: 'border-violet-500/30',
+		accent: 'rgba(139, 92, 246, 0.8)',
+		badge:
+			'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200',
+		border: 'border-purple-300 dark:border-purple-600',
 	},
 	emerald: {
-		accent:
-			'rgba(134, 239, 172, 0.95), rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.85)',
-		badge: 'bg-emerald-500/20 text-emerald-500',
-		border: 'border-emerald-500/30',
+		accent: 'rgba(16, 185, 129, 0.8)',
+		badge: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200',
+		border: 'border-green-300 dark:border-green-600',
 	},
 	rose: {
-		accent:
-			'rgba(254, 205, 211, 0.95), rgba(244, 114, 182, 0.9), rgba(190, 24, 93, 0.85)',
-		badge: 'bg-rose-500/20 text-rose-500',
-		border: 'border-rose-500/30',
+		accent: 'rgba(244, 63, 94, 0.8)',
+		badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-200',
+		border: 'border-pink-300 dark:border-pink-600',
 	},
 	slate: {
-		accent:
-			'rgba(203, 213, 225, 0.95), rgba(148, 163, 184, 0.9), rgba(100, 116, 139, 0.85)',
-		badge: 'bg-slate-500/20 text-slate-400',
-		border: 'border-slate-500/30',
+		accent: 'rgba(100, 116, 139, 0.8)',
+		badge: 'bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-200',
+		border: 'border-gray-300 dark:border-gray-600',
 	},
 };
 
@@ -114,16 +110,9 @@ export function BoardColumn({
 	return (
 		<section
 			className={clsx(
-				'relative flex w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/50 p-4 shadow-elevated backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none sm:w-[300px] sm:gap-4 sm:rounded-3xl sm:p-6',
-				'transition hover:-translate-y-1 hover:shadow-[0_22px_60px_-35px_rgba(79,70,229,0.45)]'
+				'relative flex w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800 sm:w-[300px] sm:gap-4 sm:rounded-3xl sm:p-6'
 			)}
 		>
-			<div
-				className="absolute inset-x-6 top-0 h-1 rounded-full bg-gradient-to-r opacity-70"
-				style={{
-					backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 35%), linear-gradient(120deg, ${theme.accent})`,
-				}}
-			/>
 			<header className="mt-1 flex items-start justify-between gap-2 sm:mt-2 sm:gap-3">
 				<div className="space-y-1">
 					<InlineEditableText
@@ -144,7 +133,7 @@ export function BoardColumn({
 				<button
 					type="button"
 					onClick={() => onDeleteColumn(column.id)}
-					className="rounded-full border border-transparent bg-white/60 p-1.5 text-slate-400 shadow-sm transition hover:border-rose-200 hover:text-rose-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-slate-800/80 dark:text-slate-500 dark:hover:text-rose-300 dark:focus-visible:ring-offset-slate-900 sm:p-2"
+					className="rounded-full border border-slate-300 bg-slate-100 p-1.5 text-slate-400 transition hover:border-rose-300 hover:text-rose-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-slate-500 dark:hover:text-rose-300 sm:p-2"
 					aria-label="Delete column"
 				>
 					<TrashIcon className="h-3 w-3 sm:h-4 sm:w-4" />

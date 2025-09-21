@@ -19,71 +19,56 @@ interface BoardState {
   removeTag: (tag: string) => void;
 }
 
-const initialAvailableTags = ['ux', 'visual', 'research', 'frontend', 'analytics', 'strategy'];
+const initialAvailableTags = ['work', 'personal', 'health', 'urgent', 'low-priority', 'shopping'];
 
 const initialColumns: Column[] = [
   {
     id: createId(),
-    title: 'Discover',
+    title: 'To Do',
     theme: 'sky',
     cards: [
       {
         id: createId(),
-        title: 'Customer journey interviews',
-        description: 'Schedule interviews with 5 power users to understand friction in onboarding.',
-        tags: ['research'],
+        title: 'Buy groceries',
+        description: 'Milk, bread, eggs, and vegetables for the week.',
+        tags: ['personal'],
         createdAt: new Date().toISOString()
       },
       {
         id: createId(),
-        title: 'Quantify churn signals',
-        description: 'Pull cohort report to identify where abandonment peaks.',
-        tags: ['analytics'],
+        title: 'Call dentist',
+        description: 'Schedule annual checkup appointment.',
+        tags: ['health'],
         createdAt: new Date().toISOString()
       }
     ]
   },
   {
     id: createId(),
-    title: 'In Design',
+    title: 'In Progress',
     theme: 'violet',
     cards: [
       {
         id: createId(),
-        title: 'Empty state concept',
-        description: 'Prototype the celebratory illustration for project completion.',
-        tags: ['ux', 'visual'],
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: createId(),
-        title: 'Mobile layout exploration',
-        description: 'Adapt the experience for narrow viewports with priority on accessibility.',
-        tags: ['responsive'],
+        title: 'Finish project report',
+        description: 'Complete the quarterly project summary for the team.',
+        tags: ['work'],
         createdAt: new Date().toISOString()
       }
     ]
   },
   {
     id: createId(),
-    title: 'In Build',
+    title: 'Done',
     theme: 'emerald',
-    cards: [
-      {
-        id: createId(),
-        title: 'Checklist component',
-        description: 'Implement interactive checklist with keyboard support and framer-motion transitions.',
-        tags: ['frontend'],
-        createdAt: new Date().toISOString()
-      }
-    ]
+    cards: []
   }
 ];
 
 export const useBoardStore = create<BoardState>()(
   persist(
     (set) => ({
-      boardTitle: 'Atlas Flow Launch Plan',
+      boardTitle: 'My Todo Board',
       columns: initialColumns,
       availableTags: initialAvailableTags,
       setBoardTitle: (title) => set(() => ({ boardTitle: title })),
