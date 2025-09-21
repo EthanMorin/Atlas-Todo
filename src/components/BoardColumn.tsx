@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Card, Column, ColumnTheme } from '../lib/types';
 import { InlineEditableText } from './InlineEditableText';
 import { CardItem } from './CardItem';
+import { useBoardStore } from '../hooks/useBoardStore';
 
 interface BoardColumnProps {
 	column: Column;
@@ -83,19 +84,29 @@ export function BoardColumn({
 	const [isAddingCard, setIsAddingCard] = useState(false);
 	const [cardTitle, setCardTitle] = useState('');
 	const [cardDescription, setCardDescription] = useState('');
+	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 	const [isDragOver, setIsDragOver] = useState(false);
 	const listRef = useRef<HTMLDivElement | null>(null);
+
+	const { availableTags } = useBoardStore();
 
 	const handleAddCard = () => {
 		if (!cardTitle.trim()) return;
 		onAddCard(column.id, {
 			title: cardTitle.trim(),
 			description: cardDescription.trim() || undefined,
-			tags: [],
+			tags: selectedTags,
 		});
 		setCardTitle('');
 		setCardDescription('');
+		setSelectedTags([]);
 		setIsAddingCard(false);
+	};
+
+	const handleToggleTag = (tag: string) => {
+		setSelectedTags((prev) =>
+			prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+		);
 	};
 
 	const theme = themeStyles[column.theme];
@@ -103,7 +114,7 @@ export function BoardColumn({
 	return (
 		<section
 			className={clsx(
-				'relative flex w-[330px] shrink-0 flex-col gap-4 rounded-3xl border border-white/10 bg-white/50 p-6 shadow-elevated backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none',
+				'relative flex w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/50 p-4 shadow-elevated backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none sm:w-[300px] sm:gap-4 sm:rounded-3xl sm:p-6',
 				'transition hover:-translate-y-1 hover:shadow-[0_22px_60px_-35px_rgba(79,70,229,0.45)]'
 			)}
 		>
@@ -113,17 +124,17 @@ export function BoardColumn({
 					backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 35%), linear-gradient(120deg, ${theme.accent})`,
 				}}
 			/>
-			<header className="mt-2 flex items-start justify-between gap-3">
+			<header className="mt-1 flex items-start justify-between gap-2 sm:mt-2 sm:gap-3">
 				<div className="space-y-1">
 					<InlineEditableText
 						value={column.title}
 						onSubmit={(title) => onUpdateColumn(column.id, { title })}
-						className="text-lg font-semibold text-slate-900 dark:text-slate-100"
+						className="text-base font-semibold text-slate-900 dark:text-slate-100 sm:text-lg"
 						maxLength={36}
 					/>
 					<span
 						className={clsx(
-							'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide',
+							'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-3 sm:py-1',
 							theme.badge
 						)}
 					>
@@ -133,17 +144,17 @@ export function BoardColumn({
 				<button
 					type="button"
 					onClick={() => onDeleteColumn(column.id)}
-					className="rounded-full border border-transparent bg-white/60 p-2 text-slate-400 shadow-sm transition hover:border-rose-200 hover:text-rose-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-slate-800/80 dark:text-slate-500 dark:hover:text-rose-300 dark:focus-visible:ring-offset-slate-900"
+					className="rounded-full border border-transparent bg-white/60 p-1.5 text-slate-400 shadow-sm transition hover:border-rose-200 hover:text-rose-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-slate-800/80 dark:text-slate-500 dark:hover:text-rose-300 dark:focus-visible:ring-offset-slate-900 sm:p-2"
 					aria-label="Delete column"
 				>
-					<TrashIcon className="h-4 w-4" />
+					<TrashIcon className="h-3 w-3 sm:h-4 sm:w-4" />
 				</button>
 			</header>
 
 			<div
 				ref={listRef}
 				className={clsx(
-					'flex flex-1 flex-col gap-4 overflow-y-auto pb-4 scrollbar-thin rounded-2xl',
+					'flex flex-1 flex-col gap-3 overflow-y-auto pb-3 scrollbar-thin rounded-xl sm:gap-4 sm:pb-4 sm:rounded-2xl',
 					isDragOver &&
 						'ring-2 ring-indigo-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
 				)}
@@ -223,7 +234,7 @@ export function BoardColumn({
 
 			<div
 				className={clsx(
-					'rounded-2xl border border-dashed p-4 transition',
+					'rounded-xl border border-dashed p-3 transition sm:rounded-2xl sm:p-4',
 					theme.border
 				)}
 			>
@@ -233,25 +244,54 @@ export function BoardColumn({
 							event.preventDefault();
 							handleAddCard();
 						}}
-						className="space-y-3"
+						className="space-y-2 sm:space-y-3"
 					>
 						<input
 							value={cardTitle}
 							onChange={(event) => setCardTitle(event.target.value)}
 							placeholder="Card title"
-							className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-100 dark:focus:ring-indigo-400 dark:focus:ring-offset-slate-900"
+							className="w-full rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-100 dark:focus:ring-indigo-400 dark:focus:ring-offset-slate-900 sm:rounded-xl sm:px-4"
 						/>
 						<textarea
 							value={cardDescription}
 							onChange={(event) => setCardDescription(event.target.value)}
 							placeholder="Add more context"
-							rows={3}
-							className="w-full resize-none rounded-xl border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-200 dark:focus:ring-indigo-400 dark:focus:ring-offset-slate-900"
+							rows={2}
+							className="w-full resize-none rounded-lg border border-slate-200 bg-white/80 px-3 py-2 text-sm text-slate-600 outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-200 dark:focus:ring-indigo-400 dark:focus:ring-offset-slate-900 sm:rounded-xl sm:px-4 sm:rows-3"
 						/>
-						<div className="flex items-center justify-between">
+
+						{/* Tag Selection */}
+						<div className="space-y-2">
+							<p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+								Tags (optional)
+							</p>
+							<div className="flex flex-wrap gap-1.5">
+								{availableTags.map((tag) => {
+									const isSelected = selectedTags.includes(tag);
+									return (
+										<button
+											key={tag}
+											type="button"
+											onClick={() => handleToggleTag(tag)}
+											className={clsx(
+												'rounded-full border px-2 py-0.5 text-xs font-medium transition sm:px-3 sm:py-1',
+												isSelected
+													? 'border-indigo-400 bg-indigo-100 text-indigo-700 hover:border-indigo-500 hover:bg-indigo-200 dark:border-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-200 dark:hover:bg-indigo-500/30'
+													: 'border-slate-200 text-slate-500 hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300'
+											)}
+										>
+											{isSelected ? '✓' : '#'}
+											{tag}
+										</button>
+									);
+								})}
+							</div>
+						</div>
+
+						<div className="flex items-center justify-between gap-2">
 							<button
 								type="submit"
-								className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+								className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500 sm:gap-2 sm:rounded-xl sm:px-4 sm:py-2 sm:text-sm"
 							>
 								Add card
 							</button>
@@ -261,8 +301,9 @@ export function BoardColumn({
 									setIsAddingCard(false);
 									setCardTitle('');
 									setCardDescription('');
+									setSelectedTags([]);
 								}}
-								className="text-sm font-medium text-slate-400 transition hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-300"
+								className="text-xs font-medium text-slate-400 transition hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-300 sm:text-sm"
 							>
 								Cancel
 							</button>
@@ -272,9 +313,9 @@ export function BoardColumn({
 					<button
 						type="button"
 						onClick={() => setIsAddingCard(true)}
-						className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white/40 py-3 text-sm font-semibold text-slate-500 transition hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+						className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-slate-300 bg-white/40 py-2.5 text-xs font-semibold text-slate-500 transition hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300 sm:gap-2 sm:rounded-xl sm:py-3 sm:text-sm"
 					>
-						<PlusCircleIcon className="h-5 w-5" /> Add a card
+						<PlusCircleIcon className="h-4 w-4 sm:h-5 sm:w-5" /> Add a card
 					</button>
 				)}
 			</div>

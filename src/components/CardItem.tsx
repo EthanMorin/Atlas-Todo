@@ -145,23 +145,23 @@ export function CardItem({
 			onDragStart={handleDragStart}
 			onDragEnd={handleDragEnd}
 			className={clsx(
-				'group relative overflow-hidden rounded-2xl bg-white/70 p-4 shadow-card backdrop-blur transition hover:-translate-y-1 hover:shadow-elevated dark:bg-slate-800/70 dark:shadow-none',
+				'group relative overflow-hidden rounded-xl bg-white/70 p-3 shadow-card backdrop-blur transition hover:-translate-y-1 hover:shadow-elevated dark:bg-slate-800/70 dark:shadow-none sm:rounded-2xl sm:p-4',
 				isDragging && 'opacity-60'
 			)}
 		>
 			<div className="absolute inset-0 pointer-events-none opacity-0 transition group-hover:opacity-100">
 				<div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-indigo-200/30 dark:from-white/5 dark:to-indigo-500/10" />
 			</div>
-			<div className="flex items-start justify-between gap-3">
+			<div className="flex items-start justify-between gap-2 sm:gap-3">
 				<InlineEditableText
 					value={card.title}
 					onSubmit={(title) => onUpdate(columnId, card.id, { title })}
-					className="text-base font-semibold text-slate-800 dark:text-slate-100"
+					className="text-sm font-semibold text-slate-800 dark:text-slate-100 sm:text-base"
 					maxLength={80}
 				/>
 				<Menu as="div" className="relative">
-					<Menu.Button className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/80 dark:text-slate-500 dark:hover:bg-slate-700/80 dark:hover:text-slate-200">
-						<EllipsisHorizontalIcon className="h-5 w-5" />
+					<Menu.Button className="rounded-full p-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/80 dark:text-slate-500 dark:hover:bg-slate-700/80 dark:hover:text-slate-200 sm:p-1">
+						<EllipsisHorizontalIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 					</Menu.Button>
 					<Transition
 						as={Fragment}
@@ -172,7 +172,7 @@ export function CardItem({
 						leaveFrom="transform scale-100 opacity-100"
 						leaveTo="transform scale-95 opacity-0"
 					>
-						<Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right overflow-hidden rounded-xl border border-slate-200 bg-white/95 p-1 text-sm shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-800/95">
+						<Menu.Items className="absolute right-0 z-10 mt-1 w-36 origin-top-right overflow-hidden rounded-lg border border-slate-200 bg-white/95 p-1 text-xs shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-800/95 sm:mt-2 sm:w-44 sm:rounded-xl sm:text-sm">
 							<div className="px-2 py-1 text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
 								Move to
 							</div>
@@ -222,12 +222,12 @@ export function CardItem({
 			</div>
 
 			{card.tags.length > 0 && (
-				<div className="mt-3 flex flex-wrap gap-2">
+				<div className="mt-2 flex flex-wrap gap-1.5 sm:mt-3 sm:gap-2">
 					{card.tags.map((tag) => (
 						<span
 							key={tag}
 							className={clsx(
-								'rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide',
+								'rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide sm:px-3 sm:py-1',
 								getTagColor(tag)
 							)}
 						>
@@ -237,7 +237,7 @@ export function CardItem({
 				</div>
 			)}
 
-			<div className="mt-3 space-y-2 text-sm text-slate-500 dark:text-slate-300">
+			<div className="mt-2 space-y-1 text-xs text-slate-500 dark:text-slate-300 sm:mt-3 sm:space-y-2 sm:text-sm">
 				<InlineEditableText
 					value={card.description ?? ''}
 					onSubmit={(description) =>
@@ -245,24 +245,26 @@ export function CardItem({
 					}
 					placeholder="Write a description"
 					multiline
-					className="text-sm font-normal leading-relaxed text-slate-500 dark:text-slate-300"
+					className="text-xs font-normal leading-relaxed text-slate-500 dark:text-slate-300 sm:text-sm"
 					maxLength={220}
 				/>
 			</div>
 
-			<div className="mt-4 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
-				<span>{new Date(card.createdAt).toLocaleDateString()}</span>
+			<div className="mt-3 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 sm:mt-4">
+				<span className="text-xs sm:text-xs">
+					{new Date(card.createdAt).toLocaleDateString()}
+				</span>
 				<button
 					type="button"
 					onClick={() => setIsExpanded((state) => !state)}
-					className="font-medium text-indigo-500 transition hover:text-indigo-400"
+					className="text-xs font-medium text-indigo-500 transition hover:text-indigo-400 sm:text-xs"
 				>
 					{isExpanded ? 'Hide details' : 'Quick add tag'}
 				</button>
 			</div>
 
 			{isExpanded && (
-				<div className="mt-3 flex flex-wrap gap-2">
+				<div className="mt-2 flex flex-wrap gap-1.5 sm:mt-3 sm:gap-2">
 					{availableTags.map((tag) => {
 						const isSelected = card.tags.includes(tag);
 						return (
@@ -274,7 +276,7 @@ export function CardItem({
 									type="button"
 									onClick={() => handleToggleTag(tag)}
 									className={clsx(
-										'rounded-full border px-3 py-1 pr-6 text-xs font-medium transition',
+										'rounded-full border px-2 py-0.5 pr-5 text-xs font-medium transition sm:px-3 sm:py-1 sm:pr-6',
 										isSelected
 											? 'border-indigo-400 bg-indigo-100 text-indigo-700 hover:border-indigo-500 hover:bg-indigo-200 dark:border-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-200 dark:hover:bg-indigo-500/30'
 											: 'border-slate-200 text-slate-500 hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-700 dark:text-slate-300 dark:hover:border-indigo-500 dark:hover:text-indigo-300'
@@ -286,11 +288,11 @@ export function CardItem({
 								<button
 									type="button"
 									onClick={(e) => handleDeleteTag(tag, e)}
-									className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-slate-400 opacity-0 transition hover:bg-rose-100 hover:text-rose-600 group-hover:opacity-100 dark:text-slate-500 dark:hover:bg-rose-500/20 dark:hover:text-rose-400"
+									className="absolute right-0.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-slate-400 opacity-0 transition hover:bg-rose-100 hover:text-rose-600 group-hover:opacity-100 dark:text-slate-500 dark:hover:bg-rose-500/20 dark:hover:text-rose-400 sm:right-1"
 									title={`Delete tag "${tag}"`}
 								>
 									<svg
-										className="h-3 w-3"
+										className="h-2.5 w-2.5 sm:h-3 sm:w-3"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -315,13 +317,13 @@ export function CardItem({
 								onChange={(e) => setNewTagInput(e.target.value)}
 								onKeyDown={handleKeyPress}
 								placeholder="New tag..."
-								className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400 dark:border-slate-700 dark:bg-slate-700 dark:text-slate-300 dark:focus:border-indigo-500 dark:focus:ring-indigo-500"
+								className="rounded-full border border-slate-200 px-2 py-0.5 text-xs font-medium text-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400 dark:border-slate-700 dark:bg-slate-700 dark:text-slate-300 dark:focus:border-indigo-500 dark:focus:ring-indigo-500 sm:px-3 sm:py-1"
 								autoFocus
 							/>
 							<button
 								type="button"
 								onClick={handleCreateTag}
-								className="rounded-full bg-indigo-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-400"
+								className="rounded-full bg-indigo-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-400 sm:px-3 sm:py-1"
 							>
 								Add
 							</button>
@@ -331,7 +333,7 @@ export function CardItem({
 									setNewTagInput('');
 									setShowNewTagInput(false);
 								}}
-								className="rounded-full bg-slate-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-400"
+								className="rounded-full bg-slate-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-400 sm:px-3 sm:py-1"
 							>
 								Cancel
 							</button>
@@ -340,7 +342,7 @@ export function CardItem({
 						<button
 							type="button"
 							onClick={() => setShowNewTagInput(true)}
-							className="rounded-full border border-dashed border-slate-300 px-3 py-1 text-xs font-medium text-slate-400 transition hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-600 dark:text-slate-500 dark:hover:border-indigo-500 dark:hover:text-indigo-300"
+							className="rounded-full border border-dashed border-slate-300 px-2 py-0.5 text-xs font-medium text-slate-400 transition hover:border-indigo-400 hover:text-indigo-500 dark:border-slate-600 dark:text-slate-500 dark:hover:border-indigo-500 dark:hover:text-indigo-300 sm:px-3 sm:py-1"
 						>
 							+ New tag
 						</button>
@@ -350,7 +352,7 @@ export function CardItem({
 						<button
 							type="button"
 							onClick={() => onUpdate(columnId, card.id, { tags: [] })}
-							className="rounded-full border border-transparent bg-rose-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-400"
+							className="rounded-full border border-transparent bg-rose-500 px-2 py-0.5 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-400 sm:px-3 sm:py-1"
 						>
 							Clear all tags
 						</button>

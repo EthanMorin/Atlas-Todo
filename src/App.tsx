@@ -74,52 +74,46 @@ export default function App() {
 				<div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/10 blur-3xl" />
 			</div>
 
-			<div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col gap-12 px-6 py-10 lg:px-12">
-				<header className="flex flex-wrap items-center justify-between gap-6 rounded-3xl border border-white/10 bg-white/60 px-8 py-6 shadow-elevated backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none">
-					<div className="flex items-start gap-5">
-						<div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-sky-500 text-white shadow-lg">
-							<SparklesIcon className="h-6 w-6" />
+			<div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:gap-12 lg:px-12 lg:py-10">
+				<header className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/60 p-4 shadow-elevated backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:rounded-3xl sm:p-6 lg:p-8">
+					<div className="flex items-start gap-3 sm:gap-5">
+						<div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-sky-500 text-white shadow-lg sm:h-12 sm:w-12 sm:rounded-2xl">
+							<SparklesIcon className="h-5 w-5 sm:h-6 sm:w-6" />
 						</div>
-						<div className="space-y-2">
+						<div className="space-y-1 sm:space-y-2">
 							<InlineEditableText
 								value={boardTitle}
 								onSubmit={setBoardTitle}
-								className="max-w-xl text-3xl font-semibold text-slate-900 dark:text-white"
+								className="max-w-xl text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl lg:text-3xl"
 								maxLength={54}
 							/>
-							<p className="max-w-2xl text-sm text-slate-500 dark:text-slate-400">
-								Curate your creative sprints, stakeholder rituals, and delivery
-								checkpoints in a tactile, motion-inspired workspace.
-							</p>
 						</div>
 					</div>
-					<div className="flex items-center gap-4">
-						<div className="hidden items-center gap-3 rounded-2xl border border-white/10 bg-white/40 px-4 py-3 text-sm font-medium text-slate-500 shadow-inner backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/50 dark:text-slate-300 lg:flex">
-							<span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-							Live collaboration enabled
-						</div>
+					<div className="flex items-center justify-between gap-3 sm:gap-4">
 						<button
 							type="button"
 							onClick={() => setIsDarkMode((mode) => !mode)}
-							className="inline-flex items-center gap-2 rounded-2xl border border-transparent bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-elevated dark:bg-white dark:text-slate-900"
+							className="inline-flex items-center gap-2 rounded-xl border border-transparent bg-slate-900 px-3 py-2 text-xs font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-elevated dark:bg-white dark:text-slate-900 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm"
 						>
 							{isDarkMode ? (
-								<SunIcon className="h-5 w-5" />
+								<SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 							) : (
-								<MoonIcon className="h-5 w-5" />
+								<MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
 							)}
-							{isDarkMode ? 'Light mode' : 'Dark mode'}
+							<span className="hidden sm:inline">
+								{isDarkMode ? 'Light mode' : 'Dark mode'}
+							</span>
 						</button>
 					</div>
 				</header>
 
-				<main className="flex flex-1 flex-col gap-8">
+				<main className="flex flex-1 flex-col gap-4 sm:gap-6 lg:gap-8">
 					<div className="flex items-center justify-between gap-4">
 						<div>
-							<h2 className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500 dark:text-slate-400">
+							<h2 className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400 sm:text-sm sm:tracking-[0.4em]">
 								Flow roadmap
 							</h2>
-							<p className="mt-2 text-lg text-slate-500 dark:text-slate-400">
+							<p className="mt-1 text-sm text-slate-500 dark:text-slate-400 sm:mt-2 sm:text-base lg:text-lg">
 								Drag and drop cards between milestones, or tap a card to enrich
 								it with context.
 							</p>
@@ -127,9 +121,7 @@ export default function App() {
 					</div>
 
 					<div className="relative">
-						<div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-100 via-slate-100/0 to-transparent dark:from-slate-950" />
-						<div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-100 via-slate-100/0 to-transparent dark:from-slate-950" />
-						<div className="scrollbar-thin flex gap-6 overflow-x-auto pb-6 pr-6">
+						<div className="scrollbar-thin flex gap-3 overflow-x-auto pb-4 pr-4 sm:gap-4 sm:pb-6 sm:pr-6 lg:gap-6">
 							{columnGrid.map((column) => (
 								<BoardColumn
 									key={column.id}
@@ -151,47 +143,49 @@ export default function App() {
 									addColumn(columnTitle.trim(), selectedTheme);
 									setColumnTitle('');
 								}}
-								className="flex w-[310px] shrink-0 flex-col gap-4 rounded-3xl border border-dashed border-white/30 bg-white/30 p-6 text-left shadow-inner backdrop-blur dark:border-slate-700 dark:bg-slate-900/40"
+								className="flex w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-dashed border-white/30 bg-white/30 p-4 text-left backdrop-blur dark:border-slate-700 dark:bg-slate-900/40 sm:w-[300px] sm:gap-4 sm:rounded-3xl sm:p-6"
 							>
-								<p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
+								<p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 sm:text-sm sm:tracking-[0.25em]">
 									New column
 								</p>
 								<input
 									value={columnTitle}
 									onChange={(event) => setColumnTitle(event.target.value)}
 									placeholder="Column name"
-									className="w-full rounded-2xl border border-transparent bg-white/90 px-4 py-3 text-sm font-medium text-slate-600 shadow-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-white dark:bg-slate-900/60 dark:text-slate-200 dark:focus:ring-indigo-500 dark:focus:ring-offset-slate-950"
+									className="w-full rounded-xl border border-transparent bg-white/90 px-3 py-2 text-sm font-medium text-slate-600 shadow-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-white dark:bg-slate-900/60 dark:text-slate-200 dark:focus:ring-indigo-500 dark:focus:ring-offset-slate-950 sm:rounded-2xl sm:px-4 sm:py-3"
 								/>
 								<div className="space-y-2">
-									<p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+									<p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 sm:tracking-[0.3em]">
 										Theme
 									</p>
-									<div className="grid grid-cols-3 gap-3">
+									<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
 										{themeOptions.map((theme) => (
 											<button
 												key={theme.id}
 												type="button"
 												onClick={() => setSelectedTheme(theme.id)}
 												className={clsx(
-													'group relative flex h-16 flex-col items-center justify-center gap-2 rounded-2xl border border-transparent bg-white/60 p-2 text-xs font-semibold uppercase tracking-wide text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:bg-slate-900/60 dark:text-slate-300',
+													'group relative flex h-12 flex-col items-center justify-center gap-1 rounded-xl border border-transparent bg-white/60 p-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:bg-slate-900/60 dark:text-slate-300 sm:h-14 sm:gap-2 sm:rounded-2xl sm:p-2',
 													selectedTheme === theme.id &&
 														'border-indigo-400 text-indigo-500 shadow-lg dark:border-indigo-500 dark:text-indigo-300'
 												)}
 											>
 												<span
 													className={clsx(
-														'h-2 w-16 rounded-full bg-gradient-to-r',
+														'h-1.5 w-12 rounded-full bg-gradient-to-r sm:h-2 sm:w-16',
 														theme.swatch
 													)}
 												/>
-												{theme.label}
+												<span className="text-xs sm:text-xs">
+													{theme.label}
+												</span>
 											</button>
 										))}
 									</div>
 								</div>
 								<button
 									type="submit"
-									className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-sky-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-elevated"
+									className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-500 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm"
 								>
 									Create column
 								</button>
@@ -200,13 +194,10 @@ export default function App() {
 					</div>
 				</main>
 
-				<footer className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-8 text-xs text-slate-400 dark:border-slate-800/80 dark:text-slate-600 lg:flex-row">
-					<p>Crafted for immersive product storytelling.</p>
-					<div className="flex items-center gap-4">
-						<span>Command palette · ⌘K</span>
-						<span>Focus mode · ⇧F</span>
-						<span>Share preview · ⌘P</span>
-					</div>
+				<footer className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-4 text-xs text-slate-400 dark:border-slate-800/80 dark:text-slate-600 sm:gap-4 sm:py-6 lg:flex-row lg:py-8">
+					<p className="text-center">
+						&copy; {new Date().getFullYear()} Ethan Morin
+					</p>
 				</footer>
 			</div>
 		</div>
