@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import {
+	MoonIcon,
+	SunIcon,
+	SparklesIcon,
+	PencilIcon,
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { BoardColumn } from './components/BoardColumn';
 import { InlineEditableText } from './components/InlineEditableText';
@@ -69,21 +74,29 @@ export default function App() {
 			)}
 		>
 			<div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:gap-12 lg:px-12 lg:py-10">
-				<header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:rounded-3xl sm:p-6 lg:p-8">
-					<div className="flex items-start gap-3 sm:gap-5">
+				<header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800 sm:flex-row sm:items-center sm:gap-6 sm:rounded-3xl sm:p-6 lg:p-8">
+					{/* Left section - Icon */}
+					<div className="flex items-center justify-start">
 						<div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-600 text-white sm:h-12 sm:w-12 sm:rounded-2xl">
 							<SparklesIcon className="h-5 w-5 sm:h-6 sm:w-6" />
 						</div>
-						<div className="space-y-1 sm:space-y-2">
+					</div>
+
+					{/* Center section - Board Title */}
+					<div className="flex flex-1 items-center">
+						<div className="flex items-center gap-2">
 							<InlineEditableText
 								value={boardTitle}
 								onSubmit={setBoardTitle}
-								className="max-w-xl text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl lg:text-3xl"
+								className="max-w-xl text-center text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl lg:text-3xl"
 								maxLength={54}
 							/>
+							<PencilIcon className="h-5 w-5 text-slate-400 dark:text-slate-500" />
 						</div>
 					</div>
-					<div className="flex items-center justify-between gap-3 sm:gap-4">
+
+					{/* Right section - Theme Toggle */}
+					<div className="flex items-center justify-end">
 						<button
 							type="button"
 							onClick={() => setIsDarkMode((mode) => !mode)}
@@ -158,9 +171,10 @@ export default function App() {
 												type="button"
 												onClick={() => setSelectedTheme(theme.id)}
 												className={clsx(
-													'group relative flex h-12 flex-col items-center justify-center gap-1 rounded-xl border border-slate-300 bg-white p-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 sm:h-14 sm:gap-2 sm:rounded-2xl sm:p-2',
-													selectedTheme === theme.id &&
-														'border-slate-400 text-slate-700 dark:border-slate-500 dark:text-slate-200'
+													'group relative flex h-12 flex-col items-center justify-center gap-1 rounded-xl border-2 p-1.5 text-xs font-semibold uppercase tracking-wide transition sm:h-14 sm:gap-2 sm:rounded-2xl sm:p-2',
+													selectedTheme === theme.id
+														? 'border-slate-500 bg-slate-100 text-slate-800 dark:border-slate-400 dark:bg-slate-600 dark:text-slate-100'
+														: 'border-slate-300 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
 												)}
 											>
 												<span
