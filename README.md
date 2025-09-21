@@ -1,14 +1,14 @@
-# Atlas Flow – Trello-inspired Task Board
+# Atlas Todo – Trello-inspired Task Board
 
-Atlas Flow is a modern, Trello-inspired kanban board crafted with React, TypeScript, Zustand, and Tailwind CSS. It was designed as a portfolio-ready showcase with immersive visuals, polished interactions, and delightful UX micro-details.
+Atlas Todo is a modern, Trello-inspired kanban board crafted with React, TypeScript, Zustand, and Tailwind CSS. It was designed as a portfolio-ready showcase with immersive visuals, polished interactions, and delightful UX micro-details.
 
 ## Features
 
-- ✨ **Editorial UI** with glassmorphism, gradients, and adaptive dark/light themes.
-- 🧠 **Persistent board state** powered by Zustand with local storage, including inline editing for the board title, column titles, and cards.
-- ➕ **Create unlimited columns** with bespoke color themes, and add cards complete with descriptions and quick tag suggestions.
-- ♻️ **Card utilities** like contextual menus, tag management, column moving, and soft onboarding examples to demonstrate layout dynamics.
-- ♿ **Accessible focus states** and keyboard-friendly inline editing experiences.
+- **Editorial UI** with glassmorphism, gradients, and adaptive dark/light themes.
+- **Persistent board state** powered by Zustand with local storage, including inline editing for the board title, column titles, and cards.
+- **Create unlimited columns** with bespoke color themes, and add cards complete with descriptions and quick tag suggestions.
+- **Card utilities** like contextual menus, tag management, column moving, and soft onboarding examples to demonstrate layout dynamics.
+- **Accessible focus states** and keyboard-friendly inline editing experiences.
 
 ## Getting Started
 
